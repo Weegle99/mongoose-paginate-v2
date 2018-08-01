@@ -60,13 +60,13 @@ function paginate(query, options, findOptions, callback) {
 
     if (limit) {
         var query = this.find(query, findOptions)
-        // .select(select)
-        // .sort(sort)
-        // .collation(collation)
-        // .skip(skip)
-        // .limit(limit)
-        // .lean(lean)
-        // .populate(populate);
+            .select(select)
+            .sort(sort)
+            .collation(collation)
+            .skip(skip)
+            .limit(limit)
+            .lean(lean)
+            .populate(populate);
 
         promises.docs = query.exec();
 
