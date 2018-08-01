@@ -17,16 +17,16 @@ var Promise = require('bluebird');
  *
  * @returns {Promise}
  */
-function paginate(query, options, callback) {
-    query   = query || {};
+function paginate(query, options, findOptions, callback) {
+    query = query || {};
     options = Object.assign({}, paginate.options, options);
     options.customLabels = options.customLabels ? options.customLabels : {};
 
-    var select     = options.select;
-    var sort       = options.sort;
-    var collation  = options.collation;
-    var populate   = options.populate;
-    var lean       = options.lean || false;
+    var select = options.select;
+    var sort = options.sort;
+    var collation = options.collation;
+    var populate = options.populate;
+    var lean = options.lean || false;
     var leanWithId = options.hasOwnProperty('leanWithId') ? options.leanWithId : true;
 
     var limit = options.hasOwnProperty('limit') ? options.limit : 10;
@@ -43,41 +43,36 @@ function paginate(query, options, callback) {
 
     if (options.hasOwnProperty('offset')) {
         offset = options.offset;
-        skip   = offset;
+        skip = offset;
     } else if (options.hasOwnProperty('page')) {
         page = options.page;
         skip = (page - 1) * limit;
     } else {
         offset = 0;
-        page   = 1;
-        skip   = offset;
+        page = 1;
+        skip = offset;
     }
 
     var promises = {
-        docs:  Promise.resolve([]),
+        docs: Promise.resolve([]),
         count: this.countDocuments(query).exec()
     };
 
     if (limit) {
-        var query = this.find(query)
-                        .select(select)
-                        .sort(sort)
-                        .collation(collation)
-                        .skip(skip)
-                        .limit(limit)
-                        .lean(lean);
-
-        if (populate) {
-            [].concat(populate).forEach(function(item) {
-                query.populate(item);
-            });
-        }
+        var query = this.find(query, findOptions)
+        // .select(select)
+        // .sort(sort)
+        // .collation(collation)
+        // .skip(skip)
+        // .limit(limit)
+        // .lean(lean)
+        // .populate(populate);
 
         promises.docs = query.exec();
 
         if (lean && leanWithId) {
-            promises.docs = promises.docs.then(function(docs) {
-                docs.forEach(function(doc) {
+            promises.docs = promises.docs.then(function (docs) {
+                docs.forEach(function (doc) {
                     doc.id = String(doc._id);
                 });
 
@@ -87,9 +82,9 @@ function paginate(query, options, callback) {
     }
 
     return Promise.props(promises)
-        .then(function(data) {
+        .then(function (data) {
             var result = {
-                [labelDocs]:  data.docs,
+                [labelDocs]: data.docs,
                 [labelTotal]: data.count,
                 limit: limit
             };
@@ -105,19 +100,19 @@ function paginate(query, options, callback) {
                 result.hasPrevPage = false;
                 result.hasNextPage = false;
 
-                result[labelPage]  = page;
+                result[labelPage] = page;
                 result[labelTotalPages] = pages;
-                             
+
                 // Set prev page
-                if(page > 1) {
+                if (page > 1) {
                     result.hasPrevPage = true;
-                    result[labelPrevPage] = (page - 1);                    
+                    result[labelPrevPage] = (page - 1);
                 } else {
                     result[labelPrevPage] = null;
                 }
 
                 // Set next page
-                if(page < pages) {
+                if (page < pages) {
                     result.hasNextPage = true;
                     result[labelNextPage] = (page + 1);
                 } else {
@@ -133,7 +128,7 @@ function paginate(query, options, callback) {
 /**
  * @param {Schema} schema
  */
-module.exports = function(schema) {
+module.exports = function (schema) {
     schema.statics.paginate = paginate;
 };
 

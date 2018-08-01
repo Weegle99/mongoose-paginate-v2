@@ -7,6 +7,8 @@
 
 > A cursor based custom pagination library for [Mongoose](http://mongoosejs.com) with customizable labels.
 
+Fork of aravind
+
 ## Installation
 
 ```sh

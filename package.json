@@ -1,5 +1,5 @@
 {
-	"name": "mongoose-paginate-v2",
+	"name": "@lkraemer/mongoose-paginate-v2",
 	"version": "1.0.12",
 	"description": "A cursor based custom pagination library for Mongoose with customizable labels.",
 	"main": "index.js",
@@ -8,7 +8,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/aravindnc/mongoose-paginate-v2.git"
+		"url": "git+https://github.com/Weegle99/mongoose-paginate-v2.git"
 	},
 	"keywords": [
 		"mongoose",
@@ -28,9 +28,9 @@
 	"author": "Aravind NC <aravind_n_c@yahoo.co.in> (http://imwebgangster.com)",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/aravindnc/mongoose-paginate-v2/issues"
+		"url": "https://github.com/Weegle99/mongoose-paginate-v2/issues"
 	},
-	"homepage": "https://github.com/aravindnc/mongoose-paginate-v2#readme",
+	"homepage": "https://github.com/Weegle99/mongoose-paginate-v2#readme",
 	"dependencies": {
 		"bluebird": "3.5.1"
 	},
