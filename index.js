@@ -7,7 +7,6 @@ var Promise = require('bluebird');
  * @param {Object|String}         [options.sort]
  * @param {Object|String}         [options.customLabels]
  * @param {Object|}               [options.collation]
- * @param {Array|Object|String}   [options.populate]
  * @param {Boolean}               [options.lean=false]
  * @param {Boolean}               [options.leanWithId=true]
  * @param {Number}                [options.offset=0] - Use offset or page to set skip position
@@ -25,7 +24,6 @@ function paginate(query, options, findOptions, callback) {
     var select = options.select;
     var sort = options.sort;
     var collation = options.collation;
-    var populate = options.populate;
     var lean = options.lean || false;
     var leanWithId = options.hasOwnProperty('leanWithId') ? options.leanWithId : true;
 
@@ -65,8 +63,7 @@ function paginate(query, options, findOptions, callback) {
             .collation(collation)
             .skip(skip)
             .limit(limit)
-            .lean(lean)
-            .populate(populate);
+            .lean(lean);
 
         promises.docs = query.exec();
 
